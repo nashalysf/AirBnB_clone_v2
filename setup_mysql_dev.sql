@@ -6,6 +6,9 @@ CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 -- creating user
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 
+-- granting user usage to all db & tables
+GRANT USAGE ON *.* TO 'hbnb_dev'@'localhost';
+
 -- granting view privileges on performance db
 GRANT SELECT ON 'performance_schema'.* TO 'hbnb_dev'@'localhost';
 
