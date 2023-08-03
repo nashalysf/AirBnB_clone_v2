@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-import re
+import json
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -116,23 +116,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it, and prints the id."""
-        try:
-            if not arg:
-                raise SyntaxError()
-            my_list = arg.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            for x in my_list[1:]:
-                ag = x.split("=")
-                ag[1] = eval(ag[1])
-                if type(ag[1]) is str:
-                    ag[1] = ag[1].replace("-", " ")
-                setattr(obj, ag[0], ag[1])
-            obj.save()
-            print("{}".format(obj.id))
-        except SyntaxError:
+        if not arg:
             print("** class name missing **")
-        except NameError:
+            return
+        arg_list = arg.split()
+        class_name = arg_list[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+
+        new_instance = HBNBCommand.classes[class_name]()
+
+        for arg in arg_list[1:]:
+            param = arg.split('=')
+            key = param[0]
+            value = param[1]
+
+            if value[0] == '\"':
+                value = value.replace('\"', '').replace('_', ' ')
+            elif '.' in value:
+                value = float(value)
+            else:
+                value = int(value)
+
+            setattr(new_instance, key, value)
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
