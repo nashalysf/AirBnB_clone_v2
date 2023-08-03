@@ -114,37 +114,33 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it, and prints the id."""
-        args = arg.split()
-        if len(args) == 0:
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
             return
-
-        class_name = args[0]
+        arg_list = args.split()
+        class_name = arg_list[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        """create new instance"""
         new_instance = HBNBCommand.classes[class_name]()
 
-        """parameters"""
-        params = args[1:]
-        for param in params:
-            try:
-                key, value = param.split("=")
-                # parse value as string, float or int
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace("\\", "").replace("_", " ")
-                elif "." in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                setattr(new_instance, key, value)
-            except ValueError:
-                # skips invalid parameter
-                pass
+        for arg in arg_list[1:]:
+            param = arg.split('=')
+            key = param[0]
+            val = param[1]
+
+            if val[0] == '\"':
+                val = val.replace('\"', '').replace('_', ' ')
+            elif '.' in val:
+                val = float(val)
+            else:
+                val = int(val)
+
+            setattr(new_instance, key, val)
+
         new_instance.save()
         print(new_instance.id)
 
