@@ -116,31 +116,32 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it, and prints the id."""
-        if not arg:
+        args = arg.split()
+        if len(args) < 1:
             print("** class name missing **")
             return
-        arg_list = arg.split()
-        class_name = arg_list[0]
+        class_name = args[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
+        """create new instance"""
         new_instance = HBNBCommand.classes[class_name]()
 
-        for arg in arg_list[1:]:
-            param = arg.split('=')
-            key = param[0]
-            value = param[1]
-
-            if value[0] == '\"':
-                value = value.replace('\"', '').replace('_', ' ')
-            elif '.' in value:
-                value = float(value)
-            else:
-                value = int(value)
-
-            setattr(new_instance, key, value)
-
+        """parameters"""
+        params = args[1:]
+        for param in params:
+            try:
+                key, value = param.split("=")
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace("\\", "").replace("_", " ")
+                elif "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, key, value)
+            except ValueError:
+                # skips invalid parameter
+                pass
         new_instance.save()
         print(new_instance.id)
 
