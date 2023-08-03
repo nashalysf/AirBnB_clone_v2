@@ -116,36 +116,23 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it, and prints the id."""
-        args = arg.split()
-        if len(args) < 1:
+        try:
+            if not arg:
+                raise SyntaxError()
+            my_list = arg.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            for x in my_list[1:]:
+                ag = x.split("=")
+                ag[1] = eval(ag[1])
+                if type(ag[1]) is str:
+                    ag[1] = ag[1].replace("-", " ")
+                setattr(obj, ag[0], ag[1])
+            obj.save()
+            print("{}".format(obj.id))
+        except SyntaxError:
             print("** class name missing **")
-            return
-
-        cls_name = args[0]
-
-        if cls_name not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        # Parameters
-
-        params = {}
-        for param in range[1:]:
-            match = re.match(r'(\w+)=(\".*\")', param)
-            if match:
-                key = match.group(1)
-                value = match.group(2).strip('"')
-                if value.startswith('"'):
-                    value = value[1:-1]
-                params[key] = value
-            else:
-                continue
-
-        # create instance
-
-        new_instance = HBNBCommand.classes[cls_name](**params)
-        new_instance.save()
-        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
