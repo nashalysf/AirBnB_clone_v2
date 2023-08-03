@@ -117,13 +117,15 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it, and prints the id."""
         args = arg.split()
-        if len(args) < 1:
+        if len(args) == 0:
             print("** class name missing **")
             return
+
         class_name = args[0]
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
         """create new instance"""
         new_instance = HBNBCommand.classes[class_name]()
 
@@ -132,6 +134,7 @@ class HBNBCommand(cmd.Cmd):
         for param in params:
             try:
                 key, value = param.split("=")
+                # parse value as string, float or int
                 if value[0] == '"' and value[-1] == '"':
                     value = value[1:-1].replace("\\", "").replace("_", " ")
                 elif "." in value:
