@@ -6,7 +6,7 @@ import unittest
 import pep8
 
 
-class TestAmenityDoc(unittest.TestCase):
+class TestAmenityModel(unittest.TestCase):
     """ Tests documentation of amenity file """
 
     def test_pep8_amenity(self):
@@ -26,6 +26,31 @@ class TestAmenityDoc(unittest.TestCase):
         pep8 = pep8.Styleguide()
         result = pep8.check_files(['tests/test_models/test_amenity.py'])
         self.assertEqual(result.total_errors, 0, "Got style errors")
+
+    def test_amenity_inheritance(self):
+        """Test amenity inherits from BaseModel"""
+        amenity = Amenity()
+        self.assertIsInstance(amenity, BaseModel)
+
+    def test_amenity_attributes(self):
+        """Test amenity attributes are set correctyl"""
+        amenity = Amenity()
+        self.assertEqual(amenity, BaseModel)
+
+    def test_amenity_table_name(self):
+        """check tablename is set correctly"""
+        self.assertEqual(Amenity.__tablename__, 'amneities')
+
+    def test_amenity_serialize(self):
+        """test serializing an Amenoty instance"""
+        amenity = Amenity()
+        am_dict = amenity.to_dic()
+        self.assertEqual(am_dict['__class__'], 'Amenity')
+
+    def test_amenity_relationship(self):
+        """Test amenity many-to-many relationship"""
+        self.assertEqual(Amenity.place_amenities.property.secondary,
+                         place_amenity)
 
 
 if '__name__' == '__main__':
