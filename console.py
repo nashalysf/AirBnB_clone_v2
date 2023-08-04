@@ -220,6 +220,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        obj = storage.all()
         print_list = []
 
         if args:
@@ -227,11 +228,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in obj.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in obj.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -340,6 +341,20 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+        @classmethod
+        def verify_attributes(cls, attribute):
+            """Verify if attributes correctrly formated"""
+            if attribute[0] is attribute[-1] in ['"', "'"]:
+                return attribute.strip('"\'').replace('_', ' ').replace('\\', '"')
+            else:
+                try:
+                    try:
+                        return int(attribute)
+                    except ValueError:
+                        return float(attribute)
+                except ValueError:
+                    return None
 
 
 if __name__ == "__main__":
