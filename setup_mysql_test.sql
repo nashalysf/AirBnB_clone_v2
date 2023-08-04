@@ -6,6 +6,9 @@ CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 -- creating user
 CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 
+-- setting password
+SET PASSWORD FOR 'hbnb_dev'@'localhost' = 'hbnb_test_pwd';
+
 -- granting user usage to all db & tables
 GRANT USAGE ON *.* TO 'hbnb_test'@'localhost';
 
