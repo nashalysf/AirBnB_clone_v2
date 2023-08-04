@@ -13,15 +13,14 @@ class FileStorage:
         if cls is not None:
             new_dict = {}
             for key, value in FileStorage.__objects.items():
-                if cls == value.__class__.__name__ or cls == value.__class__:
+                if isinstance(value, cls):
                     new_dict[key] = value
                 return new_dict
-        return FileStorage.__objects
+        return FileStorage
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -52,7 +51,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.__objects()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
@@ -60,8 +59,8 @@ class FileStorage:
         """deletes obj from __objects"""
         if obj is not None:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
+            if key in FileStorage.__objects:
+                del FileStorage.__objects[key]
                 self.save()
 
         if obj is None:
@@ -69,3 +68,4 @@ class FileStorage:
 
     def close(self):
         """ reloads for deserializations of JSON file"""
+        self.reload()
