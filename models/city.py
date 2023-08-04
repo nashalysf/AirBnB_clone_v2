@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-    # crerating cities table
+    # creaating cities table
     __tablename__ = 'cities'
     # creating cities table columns with value specs
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)

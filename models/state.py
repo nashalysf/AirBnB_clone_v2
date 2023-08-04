@@ -16,7 +16,7 @@ class State(BaseModel, Base):
         """getter that returns list of cities"""
         from models import storage
         city_list = []
-        all_cities = storage.all(City).values()
+        all_cities = storage.all(city).values()
 
         for city in all_cities:
             if self.id == city.state_id:
