@@ -44,7 +44,7 @@ class DBStorage:
                 dict[key] = result
 
         if cls is None:
-            for cls in self.__classess__:
+            for cls in self.__classes__:
                 results = DBStorage.__session.query(cls)
                 for result in results:
                     key = "{}:{}".format(result.__class__.__name__, result.id)
@@ -68,8 +68,8 @@ class DBStorage:
     def reload(self):
         """ Creates current db session """
         Base.metadata.create_all(self.__engine)
-        sessions = sessionmaker(bind=self.engine, expire_on_commit=False)
-        Session = scoped_session(sessions)
+        session = sessionmaker(bind=self.engine, expire_on_commit=False)
+        Session = scoped_session(session)
         DBStorage.__session = Session()
 
     def close(self):
