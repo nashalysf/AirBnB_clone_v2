@@ -7,13 +7,13 @@ import pep8
 
 
 class TestAmenityDoc(unittest.TestCase):
-    """ Tests documentation of console file """
+    """ Tests documentation of amenity file """
 
     def test_pep8_amenity(self):
         """Tests that amenity.py conforms to pep8 style guide"""
         pep8 = pep8.StyleGuide()
         result = pep8.check_files(['models/amenity.py'])
-        self.assertEqual(result.total_errors, 0, "Got console style errors.")
+        self.assertEqual(result.total_errors, 0, "Got style errors.")
 
     def test_amenity_module_docstring(self):
         """ Test amenity.py module docstrings """
@@ -25,7 +25,7 @@ class TestAmenityDoc(unittest.TestCase):
         """ Test that test_console.py conforms to pep8 style guide"""
         pep8 = pep8.Styleguide()
         result = pep8.check_files(['tests/test_models/test_amenity.py'])
-        self.assertEqual(result.total_errors, 0, "Got amenity style errors")
+        self.assertEqual(result.total_errors, 0, "Got style errors")
 
 
 if '__name__' == '__main__':

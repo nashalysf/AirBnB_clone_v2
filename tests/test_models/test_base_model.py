@@ -6,6 +6,34 @@ import datetime
 from uuid import UUID
 import json
 import os
+import unittest
+import pep8
+
+
+class TestBaseDoc(unittest.TestCase):
+    """ Tests documentation of base file """
+
+    def test_pep8_base_model(self):
+        """Tests that base_model.py conforms to pep8 style guide"""
+        pep8 = pep8.StyleGuide()
+        result = pep8.check_files(['models/base_models.py'])
+        self.assertEqual(result.total_errors, 0, "Got style errors.")
+
+    def test_base_module_docstring(self):
+        """ Test amenity.py module docstrings """
+        self.assertTrue(len(base_model.__doc__) >= 1,
+                        "base file needs docstring")
+        self.assertIsNot(base_model.__doc__, None, "base file needs docstring")
+
+    def test_pep8_amenity_test(self):
+        """ Test that test_console.py conforms to pep8 style guide"""
+        pep8 = pep8.Styleguide()
+        result = pep8.check_files(['tests/test_models/test_base_model.py'])
+        self.assertEqual(result.total_errors, 0, "Got style errors")
+
+
+if '__name__' == '__main__':
+    unittest.main()
 
 
 class test_basemodel(unittest.TestCase):
