@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
             for param in params:
                 k, v = param.split('=')
                 try:
-                    attribute = HBNBCommand.verify_attributes(v)
+                    attribute = HBNBCommand.verify_attribute(v)
                 except:
                     continue
                 if not attribute:
@@ -333,7 +333,7 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
         @classmethod
-        def verify_attributes(cls, attribute):
+        def verify_attributei(cls, attribute):
             """Verify if attributes correctrly formated"""
             if attribute[0] is attribute[-1] in ['"', "'"]:
                 return attribute.strip('"\'').replace('_', ' ').replace('\\', '"')
