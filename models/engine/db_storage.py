@@ -45,7 +45,7 @@ class DBStorage:
 
         if cls is None:
             for cls in self.__classess__:
-                results = DBStorage.__session.query(cl)
+                results = DBStorage.__session.query(cls)
                 for result in results:
                     key = "{}:{}".format(result.__class__.__name__, result.id)
                     dict[key] = result
