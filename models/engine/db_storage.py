@@ -29,7 +29,7 @@ class DBStorage:
     def __init__(self):
         """ Constructor for the class DBStorage """
         self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@/{}".format(username, passwd, host, db), pool_pre_ping=True)
+            "mysql+mysqldb://{}:{}@{}/{}".format(username, passwd, host, db), pool_pre_ping=True)
 
     if env == 'test':
         Base.MetaData.drop_all()
