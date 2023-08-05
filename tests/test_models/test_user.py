@@ -30,10 +30,6 @@ class TestUserDoc(unittest.TestCase):
         self.assertEqual(result.total_errors, 0, "Got style errors")
 
 
-if '__name__' == '__main__':
-    unittest.main()
-
-
 class test_User(test_basemodel):
     """ """
 
@@ -62,3 +58,7 @@ class test_User(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.password), str)
+
+
+if '__name__' == '__main__':
+    unittest.main()

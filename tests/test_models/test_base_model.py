@@ -32,8 +32,6 @@ class TestBaseDoc(unittest.TestCase):
         self.assertEqual(result.total_errors, 0, "Got style errors")
 
 
-if '__name__' == '__main__':
-    unittest.main()
 
 
 class test_basemodel(unittest.TestCase):
@@ -125,3 +123,6 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+if '__name__' == '__main__':
+    unittest.main()
