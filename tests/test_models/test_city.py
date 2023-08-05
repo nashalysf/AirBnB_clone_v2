@@ -29,12 +29,8 @@ class TestCityDoc(unittest.TestCase):
         self.assertEqual(result.total_errors, 0, "Got style errors")
 
 
-if '__name__' == '__main__':
-    unittest.main()
-
-
 class test_City(test_basemodel):
-    """ """
+    """test city"""
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -51,3 +47,29 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+    def test_init(self):
+        """Test initialization of city class"""
+        city = city()
+        self.assertEqual(city.state_id, "")
+        self.assertEqual(city.name, "")
+
+    def test_state_id(self):
+        """test type of state_id attribute"""
+        city = City()
+        self.assertIsInstance(city.state_id, str)
+
+    def test_name(self):
+        """test type of name attribute"""
+        city = City()
+        self.assertIsInstance(city.name, str)
+
+    def test_str(self):
+        """test output of __str__ method"""
+        city = City()
+        output = "[City] ({}) {}".format(city.id, city.__dict__)
+        self.assertEqual(str(city), output)
+
+
+if '__name__' == '__main__':
+    unittest.main()
