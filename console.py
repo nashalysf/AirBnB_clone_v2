@@ -114,36 +114,32 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it, and prints the id."""
-        args = arg.split()
-        if len(args) == 0:
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
             return
-
-        class_name = args[0]
-        if class_name not in HBNBCommand.classes:
+        args = args.split(" ")
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        """create new instance"""
-        new_instance = HBNBCommand.classes[class_name]()
-
-        """parameters"""
+        cls = HBNBCommand.classes[args[0]]
+        kwargs = {}
         params = args[1:]
         for param in params:
-            try:
-                key, value = param.split("=")
-                # parse value as string, float or int
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace("\\", "").replace("_", " ")
-                elif "." in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                setattr(new_instance, key, value)
-            except ValueError:
-                # skips invalid parameter
-                pass
+            k, v = param.split('=')
+            if v == '':
+                continue
+            if v[0] == '"' and v[len(v)-1] == '"':
+                v = v.strip('"')
+                v = v.replace('_', ' ')
+                v = v.replace('"', '\"')
+            else:
+                try:
+                    v = eval(v)
+                except:
+                    continue
+            kwargs[k] = v
+        new_instance = cls(**kwargs)
         new_instance.save()
         print(new_instance.id)
 
@@ -227,14 +223,14 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print("[{}]".format(", ".join(print_list)))
 
     def help_all(self):
         """ Help information for the all command """
