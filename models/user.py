@@ -18,7 +18,9 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
 
     # relationships
-    places = relationship("Place", back_ref="user",
-                          cascade="all, delete, delete orphan")
-    reviews = relationship("Review", back_ref="user",
-                           cascade="all, delete, delete orphan")
+    places = relationship("Place", back_ref="user", cascade="all, delete")
+    reviews = relationship("Review", back_ref="user", cascade="all, delete")
+
+    def __init__(self, *args, **kwargs):
+        """ Inits user """
+        super().__init__(*args, **kwargs)
