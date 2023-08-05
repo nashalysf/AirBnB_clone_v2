@@ -114,29 +114,36 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it, and prints the id."""
-        try:
-            if not arg:
-                raise SyntaxError
-            con1 = arg.split(' ')
-            new_instance = eval('{}()'.format(con1[0]))
-            params = con1[1:]
-            for param in params:
-                k, v = param.split('=')
-                try:
-                    attribute = HBNBCommand.verify_attribute(v)
-                except:
-                    continue
-                if not attribute:
-                    continue
-                setattr(new_instance, k, attribute)
-            new_instance.save()
-            print(new_instance.id)
-        except SyntaxError:
+       """Creates a new instance of BaseModel, saves it, and prints the id."""
+        args = arg.split()
+        if len(args) < 1:
             print("** class name missing **")
-        except NameError:
-            print("** class does not exist **")
+            return
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        """create new instance"""
+        new_instance = HBNBCommand.classes[class_name]()
 
+        """parameters"""
+        params = args[1:]
+        for param in params:
+            try:
+                key, value = param.split("=")
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace("\\", "").replace("_", " ")
+                elif "." in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, key, value)
+            except ValueError:
+                # skips invalid parameter
+                pass
+        new_instance.save()
+        print(new_instance.id)
+       
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -332,19 +339,6 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-        @classmethod
-        def verify_attributei(cls, attribute):
-            """Verify if attributes correctrly formated"""
-            if attribute[0] is attribute[-1] in ['"', "'"]:
-                return attribute.strip('"\'').replace('_', ' ').replace('\\', '"')
-            else:
-                try:
-                    try:
-                        return int(attribute)
-                    except ValueError:
-                        return float(attribute)
-                except ValueError:
-                    return None
 
 
 if __name__ == "__main__":
