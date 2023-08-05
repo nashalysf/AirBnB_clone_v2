@@ -18,9 +18,9 @@ class TestCityDoc(unittest.TestCase):
 
     def test_city_module_docstring(self):
         """ Test city.py module docstrings """
-        self.assertTrue(len(city.__doc__) >= 1,
+        self.assertTrue(len(City.__doc__) >= 1,
                         "city file needs docstring")
-        self.assertIsNot(city.__doc__, None, "city file needs docstring")
+        self.assertIsNot(City.__doc__, None, "city file needs docstring")
 
     def test_pep8_city_test(self):
         """ Test that test_console.py conforms to pep8 style guide"""
