@@ -1,5 +1,5 @@
 -- setting the MySQL test server for AirBnB project
-
+DROP DATABASE IF EXISTS hbnb_test_db;
 -- creating db
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 

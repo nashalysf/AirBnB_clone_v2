@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models.amenity import Amenity
+from models.city import City
 from models.review import Review
 from sqlalchemy import Integer, String, Column, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
+from os import getenv
 
-
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60), ForeignKey('places.id'), primary_key=True,
-                             nullable=False),
-                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60), ForeignKey('places.id'), primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -28,42 +29,41 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+    amenities_ids = []
 
     # Relationships
     # DBStorage
-    reviews = relationship("Review", backref='place', cascade="all, delete")
-    amenities = relationship(
-        'Amenity', secondary='place_amenity', viewonly=False)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", backref='place',
+                               cascade="all, delete, delete orphan")
+
+        amenities = relationship(
+            'Amenity', secondary='place_amenity', viewonly=False, back_populates="place_amenities")
 
     # FileStorage
-    @property
-    def reviews(self):
-        """getter that returns list of place reviews"""
-        from models import storage
-        reviews_list = []
-        all_reviews = storage.all(Review).values()
+    else:
+        @property
+        def reviews(self):
+            """
+            Retrieves the reviews associated with a Place
+            """
+            from models import storage
+            revw = []
+            for k, v in models.storage.all().items():
+                cls = k.split('.')[0]
+                if cls == "Review" and v.place_.id == self.id:
+                    revw.append(v)
+            return (revw)
 
-        for obj in all_reviews:
-            if self.id == obj.place_id:
-                reviews_list.append(obj)
-        return all_reviews
+        @property
+        def amenities(self):
+            """ Amenities Getter """
+            return self.amenity_ids
 
-    @property
-    def amenities(self):
-        """ Getter that returns list of place amenities """
-
-        from models import storage
-        amenity_list = []
-        all_amenities = storage.all('Amenity').values()
-
-        for obj in all_amenities:
-            if self.id == obj.amenity_ids:
-                amenity_list.append(obj)
-
-        return amenity_list
-
-    @amenities.setter
-    def amenities(self, obj):
-        """ Setter that appends amenity id """
-        if isinstance(obj, 'Amenity'):
-            self.amenity_id.append(obj, id)
+        @amenities.setter
+        def amenities(self, obj):
+            """
+            Setter for the amenities id's list
+            """
+            if type(obj).__name__ == "Amenity":
+                self.amenity_ids.append(obj.id)
