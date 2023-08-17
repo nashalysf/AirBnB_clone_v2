@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """ """
 import unittest
-import pep8
 from tests.test_models.test_base_model import test_basemodel
 from models import user
-from models.base_model import BaseModel
 User = user.User
 
 
