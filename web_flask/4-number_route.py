@@ -36,7 +36,7 @@ def python(text='is cool'):
 def num(n):
     """returns number value"""
     if n is int:
-        return ("{:d} is a number".format(n))
+        return "{:d} is a number".format(n)
 
 
 if __name__ == "__main__":
