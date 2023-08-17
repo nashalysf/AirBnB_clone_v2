@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 Starts a Flask web app
 """
@@ -20,4 +19,5 @@ def hhbnb():
 
 
 if __name__ == "__main__":
+    """run when invoked"""
     app.run(host='0.0.0.0', port='5000')
