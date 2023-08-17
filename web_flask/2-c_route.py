@@ -12,15 +12,17 @@ def hello_hbnb():
     """returns hello at index"""
     return ("Hello HBNB!")
 
+
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
     """returns hbnb at hbnb"""
     return ('HBNB')
 
+
 @app.route("/c/<text>", strict_slashes=False)
-def c(text):    
+def c(text): 
     """returns c will var value"""
-    return "C" + text.replace('_', " ")
+    return "C " + text.replace('_', " ")
 
 
 if __name__ == "__main__":
