@@ -7,7 +7,6 @@ from uuid import UUID
 import json
 import os
 import unittest
-import pep8
 
 
 class TestBaseDoc(unittest.TestCase):
@@ -30,8 +29,6 @@ class TestBaseDoc(unittest.TestCase):
         pep8 = pep8.Styleguide()
         result = pep8.check_files(['tests/test_models/test_base_model.py'])
         self.assertEqual(result.total_errors, 0, "Got style errors")
-
-
 
 
 class test_basemodel(unittest.TestCase):
@@ -123,6 +120,7 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
 
 if '__name__' == '__main__':
     unittest.main()
