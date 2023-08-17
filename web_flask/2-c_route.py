@@ -20,7 +20,7 @@ def hbnb():
 
 
 @app.route("/c/<text>", strict_slashes=False)
-def c(text): 
+def c(text):
     """returns c will var value"""
     return "C " + text.replace('_', " ")
 
