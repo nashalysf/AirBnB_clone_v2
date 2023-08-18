@@ -7,21 +7,26 @@ from models import *
 from models import storage
 app = Flask(__name__)
 
-""" Routes """
-
 
 @app.route('/states_list', strict_slashes=False)
 def states_list():
-    """renders HTML page with the states list"""
+    """
+    renders HTML page with the states list
+    """
     states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
 def teardown_db(exception):
-    """closes the storage on teardown"""
+    """
+    closes the storage on teardown
+    """
     storage.close()
 
 
 if __name__ == '__main__':
+    """
+    run when invoked
+    """
     app.run(host='0.0.0.0', port='5000')
