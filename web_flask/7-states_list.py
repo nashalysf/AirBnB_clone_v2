@@ -1,12 +1,14 @@
 #!/usr/bin/python3
-"""
-starts a Flask web app
-"""
 
 from flask import Flask, render_template
 from models import *
 from models import storage
 app = Flask(__name__)
+
+
+"""
+Starts a Flask web app
+"""
 
 
 @app.route('/states_list', strict_slashes=False)
