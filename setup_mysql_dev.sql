@@ -1,4 +1,5 @@
 -- Setting MySQL server, creates user and applies access
+DROP DATABASE IF EXISTS hbnb_dev_db;
 
 -- creating db
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
