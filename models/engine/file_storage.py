@@ -28,7 +28,7 @@ class FileStorage:
     def new(self, obj):
         """Adds new object to storage dictionary"""
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
             self.__objects[key] = obj
 
     def save(self):
@@ -45,10 +45,20 @@ class FileStorage:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             if key in self.__objects:
                 del self.__objects[key]
-                self.save()
+            self.save()
 
         if obj is None:
             return
+
+    def get(self, cls, id):
+        """get one object"""
+        if type(cls) == str:
+            cls = self.__classes.get(cls)
+        if cls is None:
+            return None
+        for item in self.__objects.values():
+            if item.__class__ == cls and item.id == id:
+                return item
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -66,12 +76,12 @@ class FileStorage:
             'Review': Review
         }
         try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
+            with open(self.__file_path, 'r') as f:
+                val = json.load(f)
+                for key in val:
+                    self.__objects[key] = classes[val[key]
+                                                  ['__class__'](**val[key])]
+        except:
             pass
 
     def close(self):

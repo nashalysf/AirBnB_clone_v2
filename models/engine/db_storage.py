@@ -2,10 +2,10 @@
 
 """ This module defines a class that manages database storage fro hbnb clone"""
 
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
+import models
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
@@ -64,7 +64,7 @@ class DBStorage:
 
     def get(self, cls, id):
         """ Retrieves class obj"""
-        if type(cls) is str:
+        if type(cls) == str:
             cls = self.__classes.get(cls)
         if cls is None:
             return None
