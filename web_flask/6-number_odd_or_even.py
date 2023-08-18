@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 
-"""Starts a Flask web app"""
+"""
+    Starts a Flask web app
+"""
 
 
 from flask import Flask, render_template
@@ -10,44 +12,58 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def hello_hbnb():
-    """returns hello at index"""
+    """
+        returns hello at index
+    """
     return ("Hello HBNB!")
 
 
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
-    """returns hbnb at hbnb"""
+    """
+        returns hbnb at hbnb
+    """
     return ('HBNB')
 
 
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
-    """returns c will var value"""
+    """
+        returns c will var value
+    """
     return "C " + text.replace('_', " ")
 
 
 @app.route('/python', strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def python(text='is cool'):
-    """returns c will var value"""
+    """
+        returns c will var value
+    """
     return "Python " + text.replace('_', " ")
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def num(n):
-    """displays n if is int"""
+    """
+        displays n if is int
+    """
     return "{:d} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def num_tem(n):
-    """renders template"""
+    """
+        renders template
+    """
     return render_template('5-number.html', n=n)
 
 
 @app.route('number_odd_or_even/<int:n>', strict_slashes=False)
 def odd_even(n):
-    """render template odd or even if int"""
+    """
+        render template odd or even if int
+    """
     if n % 2 == 0:
         even = 'even'
     else:
