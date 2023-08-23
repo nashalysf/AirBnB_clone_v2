@@ -72,11 +72,10 @@ class DBStorage:
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
-        if type(cls) is str:
-            cls = self.__classes.get(cls)
         if cls is None:
-            return len(self.all())
-        return len(self.all(cls))
+            return len(self.__session)
+        else:
+            return sum(isinstance(o, cls) for o in sel.__session)
 
     def reload(self):
         """ Creates current db session """
