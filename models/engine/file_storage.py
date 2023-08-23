@@ -52,13 +52,11 @@ class FileStorage:
 
     def get(self, cls, id):
         """get one object"""
-        if type(cls) == str:
-            cls = self.__classes.get(cls)
-        if cls is None:
+        if cls is None or id is None:
             return None
-        for item in self.__objects.values():
-            if item.__class__ == cls and item.id == id:
-                return item
+        key = "{}.{}".format(cls.__name__, id)
+        obj = self.__objects.get(key)
+        return obj
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -80,3 +78,14 @@ class FileStorage:
     def close(self):
         """ reloads for deserializations of JSON file"""
         self.reload()
+
+    def count(self, cls=None):
+        """count storage items"""
+        if cls is None:
+            return len(self.__objects)
+        else:
+            count = 0
+            for obj in self.__objects.values():
+                if type(obj) == cls:
+                    count += 1
+            return count

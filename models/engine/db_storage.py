@@ -64,23 +64,23 @@ class DBStorage:
 
     def get(self, cls, id):
         """ Retrieves class obj"""
-        if type(cls) == str:
-            cls = self.__classes.get(cls)
-        if cls is None:
+        if cls is None or id is None:
             return None
-        return self.__session.query(cls).filter(cls.id == id).first()
+        key = "{}.{}".format(cls.__name__, id)
+        obj = self.__session.get(key)
+        return obj
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
         if cls is None:
             return len(self.__session)
         else:
-            return sum(isinstance(o, cls) for o in sel.__session)
+            return sum(isinstance(o, cls) for o in self.__session)
 
     def reload(self):
         """ Creates current db session """
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.engine, expire_on_commit=False)
+        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session)
         self.__session = Session
 
